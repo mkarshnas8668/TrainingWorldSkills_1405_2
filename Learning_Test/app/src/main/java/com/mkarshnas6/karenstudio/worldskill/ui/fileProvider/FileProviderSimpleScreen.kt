@@ -47,11 +47,11 @@ fun FileProviderSimpleScreen(
 
     fun saveFile(): File {
         val file = File(context.filesDir, fileName)
-        file.writeText(fileContent)
+        file.bufferedWriter().use { writer -> writer.write(fileContent) }
         return file
     }
 
-    fun shareFile(file:File){
+    fun shareFile(file: File) {
         val authority = "${context.packageName}.fileprovider"
         val uri: Uri = FileProvider.getUriForFile(
             context,
@@ -59,17 +59,14 @@ fun FileProviderSimpleScreen(
             file
         )
 
-        val shareIntent = Intent().apply {
-            action = Intent.ACTION_SEND
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_STREAM,uri)
+            putExtra(Intent.EXTRA_STREAM, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        val chooser = Intent.createChooser(
-            shareIntent,
-            "... ارسال فایل با"
-        )
+        val chooser = Intent.createChooser(shareIntent,"... انتخاب فایل با")
+
         context.startActivity(chooser)
     }
 

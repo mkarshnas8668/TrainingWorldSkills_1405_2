@@ -85,5 +85,11 @@ fun HomeScreen(
             Text("fileProvider")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.EncryptionScreen.route) }
+        ) {
+            Text("encryption")
+        }
+
     }
 }

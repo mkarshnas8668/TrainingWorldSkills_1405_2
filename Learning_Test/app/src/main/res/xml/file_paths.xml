@@ -2,7 +2,7 @@
 <paths>
 
     <files-path
-        name="internal_files"
+        name="internal_fils"
         path="." />
 
     <cache-path

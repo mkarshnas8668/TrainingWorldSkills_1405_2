@@ -10,4 +10,6 @@ sealed class Screen(val route: String) {
 
     object FileProviderScreen : Screen("FileProviderScreen")
 
+    object EncryptionScreen : Screen("EncryptionScreen")
+
 }
