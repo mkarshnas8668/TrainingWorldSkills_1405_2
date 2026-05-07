@@ -1,4 +1,4 @@
-package com.mkarshnas6.karenstudio.worldskill.utils
+package com.mkarshnas6.karenstudio.worldskill.utils.storage
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
