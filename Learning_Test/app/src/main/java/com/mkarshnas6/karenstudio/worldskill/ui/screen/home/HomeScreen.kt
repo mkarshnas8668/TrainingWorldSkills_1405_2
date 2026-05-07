@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.mkarshnas6.karenstudio.worldskill.navigation.Screen
 import com.mkarshnas6.karenstudio.worldskill.viewModel.DataStoreViewModel
 
 @Composable
@@ -40,7 +41,7 @@ fun HomeScreen(
     var nameTextField by remember { mutableStateOf(savedName) }
     var notifChecked by remember { mutableStateOf(savedNotif) }
 
-    LaunchedEffect(savedName , savedNotif) {
+    LaunchedEffect(savedName, savedNotif) {
         nameTextField = savedName
         notifChecked = savedNotif
     }
@@ -76,6 +77,12 @@ fun HomeScreen(
             onClick = { viewModel.saveName(nameTextField);viewModel.saveNotif(notifChecked) }
         ) {
             Text("Save")
+        }
+
+        Button(
+            onClick = { navController.navigate(Screen.FileProviderScreen.route) }
+        ) {
+            Text("fileProvider")
         }
 
     }

@@ -90,7 +90,8 @@ class ScopedStorageManager(private val context: Context) {
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             projection,
             null,
-            null
+            null,
+            sortOrder
         )?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
             while (cursor.moveToNext()) {

@@ -8,4 +8,6 @@ sealed class Screen(val route: String) {
         fun createRoute(pageNumber: Int): String = "DataNavScreen/$pageNumber"
     }
 
+    object FileProviderScreen : Screen("FileProviderScreen")
+
 }
