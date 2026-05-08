@@ -10,5 +10,6 @@ data class ProductEntity(
     val productId: Long = 0,
     val productName: String,
     val productPrice: Double,
-    val productStock: Int = 0
+    val productStock: Int = 0,
+    val inventory: Map<String, Int>
 )

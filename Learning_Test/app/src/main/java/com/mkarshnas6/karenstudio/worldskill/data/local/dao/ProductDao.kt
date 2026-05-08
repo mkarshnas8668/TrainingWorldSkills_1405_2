@@ -22,14 +22,25 @@ interface ProductDao {
     @Query("SELECT * FROM ${AppConstant.DataBase.TABLE_PRODUCTS} WHERE productId = :productId")
     suspend fun getProductById(productId: Long): ProductEntity?
 
+    @Query("SELECT * FROM ${AppConstant.DataBase.TABLE_PRODUCTS} ORDER BY productName ASC LIMIT :limit OFFSET :offset")
+    suspend fun getProductsPage(offset: Int, limit: Int): List<ProductEntity>
+
+    @Query("SELECT COUNT(*) FROM ${AppConstant.DataBase.TABLE_PRODUCTS}")
+    suspend fun getTotalProducts(): Int
+
     @Update
     suspend fun updateProduct(product: ProductEntity)
 
     @Delete
     suspend fun deleteProduct(product: ProductEntity)
 
-    @Query("SELECT * FROM ${AppConstant.DataBase.TABLE_PRODUCTS} WHERE productName LIKE '%' || :query || '%' OR productPrice LIKE '%' || :query || '%' OR productStock LIKE '%' || :query || '%' ")
-    fun searchProducts(query: String): Flow<List<ProductEntity>>
+    @Query(
+        "SELECT * FROM ${AppConstant.DataBase.TABLE_PRODUCTS} WHERE productName LIKE '%' || :query || '%' OR " +
+                "productPrice LIKE '%' || :query || '%' OR " +
+                "productStock LIKE '%' || :query || '%' OR " +
+                "inventory LIKE '%' || :query || '%' LIMIT :limit OFFSET :offset"
+    )
+    suspend fun searchProducts(query: String, offset: Int, limit: Int): List<ProductEntity>
 
     @Query("""SELECT * FROM products WHERE productPrice BETWEEN :minPrice AND :maxPrice""")
     fun searchByPriceRange(

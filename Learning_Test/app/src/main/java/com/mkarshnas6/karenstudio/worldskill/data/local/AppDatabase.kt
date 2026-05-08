@@ -5,12 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.mkarshnas6.karenstudio.worldskill.data.local.dao.CategoryDao
 import com.mkarshnas6.karenstudio.worldskill.data.local.dao.OrderDao
 import com.mkarshnas6.karenstudio.worldskill.data.local.dao.ProductDao
 import com.mkarshnas6.karenstudio.worldskill.data.local.entity.CategoryEntity
 import com.mkarshnas6.karenstudio.worldskill.data.local.entity.OrderEntity
 import com.mkarshnas6.karenstudio.worldskill.data.local.entity.ProductEntity
+import com.mkarshnas6.karenstudio.worldskill.data.local.typeConverter.InventoryTypeConverter
 import com.mkarshnas6.karenstudio.worldskill.utils.AppConstant
 
 @Database(
@@ -23,6 +25,7 @@ import com.mkarshnas6.karenstudio.worldskill.utils.AppConstant
     exportSchema = false
 )
 //@TypeConverter(DB_TypeConverter::class) || @TypeConverter(DB_TypeConverter::class , DateTypeConverter::class , ListTypeConverter::class)
+@TypeConverters(InventoryTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
