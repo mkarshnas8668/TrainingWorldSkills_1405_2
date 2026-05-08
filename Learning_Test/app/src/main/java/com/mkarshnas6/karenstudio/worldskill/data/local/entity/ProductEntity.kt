@@ -11,5 +11,6 @@ data class ProductEntity(
     val productName: String,
     val productPrice: Double,
     val productStock: Int = 0,
+    val haveDigikala: Boolean = true,
     val inventory: Map<String, Int>
 )
