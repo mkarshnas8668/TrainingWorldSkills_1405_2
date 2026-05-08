@@ -91,5 +91,11 @@ fun HomeScreen(
             Text("encryption")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.ShopScreen.route) }
+        ) {
+            Text("Shop")
+        }
+
     }
 }

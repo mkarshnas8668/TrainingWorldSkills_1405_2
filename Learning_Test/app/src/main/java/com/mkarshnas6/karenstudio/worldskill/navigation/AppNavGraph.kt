@@ -11,6 +11,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.encryption.EncryptionScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.fileProvider.FileProviderSimpleScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dataNav.DataNavScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.shop.ShopScreen
 import com.mkarshnas6.karenstudio.worldskill.utils.SharedPrefsManager
 
 @Composable
@@ -58,6 +59,13 @@ fun AppNavGraph(
 
         composable(Screen.EncryptionScreen.route) {
             EncryptionScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.ShopScreen.route) {
+            ShopScreen(
                 navController = navController,
                 context = context
             )
