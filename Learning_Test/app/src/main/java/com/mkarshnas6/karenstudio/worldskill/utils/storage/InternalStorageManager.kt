@@ -28,6 +28,11 @@ class InternalStorageManager(private val context: Context) {
                 BufferedWriter(FileWriter(file)).use() { writer ->
                     writer.write(content)
                 }
+
+//                file.bufferedWriter().use { writer ->
+//                    writer.write(content)
+//                }
+
                 true
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -78,6 +83,11 @@ class InternalStorageManager(private val context: Context) {
                 BufferedReader(FileReader(file)).use { reader ->
                     reader.readText()
                 }
+
+//                file.bufferedReader().use { reader ->
+//                    reader.readText()
+//                }
+
             } catch (e: IOException) {
                 e.printStackTrace()
                 ""
@@ -90,6 +100,10 @@ class InternalStorageManager(private val context: Context) {
             try {
                 val file = File(filesDir, fileName)
                 if (!file.exists()) return@withContext emptyList()
+
+//                BufferedReader(FileReader(filesDir)).use { reader ->
+//                    reader.readLines()
+//                }
 
                 file.bufferedReader().use { reader -> reader.readLines() }
 

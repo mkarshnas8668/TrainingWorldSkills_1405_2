@@ -2,16 +2,10 @@ package com.mkarshnas6.karenstudio.worldskill.ui.screen.home
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
@@ -32,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.mkarshnas6.karenstudio.worldskill.navigation.Screen
-import com.mkarshnas6.karenstudio.worldskill.utils.JsonHelper
 import com.mkarshnas6.karenstudio.worldskill.viewModel.DataStoreViewModel
 
 @Composable
@@ -104,20 +97,28 @@ fun HomeScreen(
             Text("Shop")
         }
 
-    }
-    Box(modifier = Modifier.fillMaxSize()) {
-        val events = remember { JsonHelper.loadEventsFromAssets(context) }
-        LazyColumn {
-            items(events) { event ->
-                Row(
-                    modifier = Modifier
-                        .padding(vertical = 10.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(text = event.title)
-                    Text(text = " - ${event.day}/${event.month}")
-                }
-            }
+        Button(
+            onClick = { navController.navigate(Screen.OnlineShopScreen.route) }
+        ) {
+            Text("OnlineShop")
         }
+
     }
+
+//    Box(modifier = Modifier.fillMaxSize()) {
+//        val events = remember { JsonHelper.loadEventsFromAssets(context) }
+//        LazyColumn {
+//            items(events) { event ->
+//                Row(
+//                    modifier = Modifier
+//                        .padding(vertical = 10.dp)
+//                        .fillMaxWidth()
+//                ) {
+//                    Text(text = event.title)
+//                    Text(text = " - ${event.day}/${event.month}")
+//                }
+//            }
+//        }
+//    }
+
 }

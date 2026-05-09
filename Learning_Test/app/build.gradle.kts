@@ -75,6 +75,12 @@ dependencies {
 
     ksp(libs.room.compiler)
 
+//    retrofit & okhttp
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.gson.converter.core)
+
 //    Gson
     implementation(libs.gson)
 
