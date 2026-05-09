@@ -19,15 +19,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -42,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,6 +58,7 @@ import com.google.gson.Gson
 import com.mkarshnas6.karenstudio.worldskill.data.remote.RetrofitClient
 import com.mkarshnas6.karenstudio.worldskill.data.remote.model.ProductOnline
 import com.mkarshnas6.karenstudio.worldskill.data.remote.model.RegisterUserRequest
+import com.mkarshnas6.karenstudio.worldskill.data.remote.model.UpdateProductRequest
 import com.mkarshnas6.karenstudio.worldskill.utils.AppConstant
 import com.mkarshnas6.karenstudio.worldskill.utils.DataStoreManager
 import kotlinx.coroutines.Dispatchers
@@ -72,7 +81,12 @@ fun OnlineShopScreen(
 
     var showDialogRegister by remember { mutableStateOf(false) }
     var showDialogLogin by remember { mutableStateOf(false) }
+    var showDialogDelete by remember { mutableStateOf(false) }
+    var showDialogEdit by remember { mutableStateOf(false) }
     var dialogLoading by remember { mutableStateOf(false) }
+
+    var productToDelete by remember { mutableStateOf<ProductOnline?>(null) }
+    var productToEdit by remember { mutableStateOf<ProductOnline?>(null) }
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -190,6 +204,63 @@ fun OnlineShopScreen(
             } catch (e: Exception) {
                 Toast.makeText(context, "Error : ${e.message}", Toast.LENGTH_SHORT).show()
                 isLoading = false
+            }
+        }
+    }
+
+    fun deleteProduct(productId: Int) {
+        scope.launch {
+            try {
+                val response = RetrofitClient.apiService.deleteProduct(productId,"Bearer ${savedToken.value}")
+                if (response.isSuccessful) {
+                    products = products.filter { it.id != productId }
+                    Toast.makeText(
+                        context,
+                        response.body()?.message ?: "حذف شد ",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(context, "Erro in Delete ${response.code()}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(context, "Error : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun updateProduct(updatedProduct: ProductOnline) {
+        scope.launch {
+            try {
+                // 👈 اینجا تبدیل کن
+                val request = UpdateProductRequest(
+                    name = updatedProduct.name,
+                    description = updatedProduct.description,
+                    price = updatedProduct.price?.toDouble(),
+                    discountPrice = updatedProduct.discountPrice,
+                    stock = updatedProduct.stock,
+                    sku = updatedProduct.sku,
+                    categoryId = updatedProduct.categoryId,
+                    isAvailable = updatedProduct.isAvailable
+                )
+
+                val response = RetrofitClient.apiService.updateProduct(
+                    productId = updatedProduct.id ?: 0,
+                    updatedProductRequest = request,
+                    token = "Bearer ${savedToken.value}"
+                )
+
+                if (response.isSuccessful) {
+                    val updatedFromServer = response.body()
+                    products = products.map {
+                        if (it.id == updatedProduct.id) updatedFromServer ?: it else it
+                    }
+                    Toast.makeText(context, "آپدیت شد!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "خطا: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(context, "خطا: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -398,6 +469,41 @@ fun OnlineShopScreen(
                                         )
                                     }
                                 }
+                                Box(
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .fillMaxSize()
+                                ) {
+                                    Row(modifier = Modifier.align(Alignment.TopEnd)) {
+
+                                        Icon(
+                                            imageVector = Icons.Default.Edit,
+                                            contentDescription = "ic edit",
+                                            tint = Color.Black,
+                                            modifier = Modifier
+                                                .size(23.dp)
+                                                .clip(CircleShape)
+                                                .clickable {
+                                                    productToEdit = product
+                                                    showDialogEdit = true
+                                                }
+                                        )
+
+                                        Icon(
+                                            imageVector = Icons.Default.Delete,
+                                            contentDescription = "ic delete",
+                                            tint = Color.Black,
+                                            modifier = Modifier
+                                                .size(23.dp)
+                                                .clip(CircleShape)
+                                                .clickable {
+                                                    productToDelete = product
+                                                    showDialogDelete = true
+                                                }
+                                        )
+
+                                    }
+                                }
                             }
                         }
                     }
@@ -405,6 +511,32 @@ fun OnlineShopScreen(
             }
 
         }
+    }
+
+    if (showDialogEdit) {
+        productToEdit?.let { product ->
+            EditProductDialog(
+                product,
+                false,
+                onDismiss = { productToEdit = null;showDialogEdit = false },
+                onSaveClick = { updateProduct(product);showDialogEdit = false }
+            )
+        }
+    }
+
+    if (showDialogDelete) {
+        DeleteDialog(
+            onDismiss = { showDialogDelete = false;productToDelete = null },
+            onDeleteClick = {
+                if (productToDelete != null) {
+                    productToDelete?.let { product ->
+                        deleteProduct(product.id)
+                    }
+                    productToDelete = null
+                    showDialogDelete = false
+                }
+            }
+        )
     }
 
     if (showDialogLogin) {
@@ -459,6 +591,183 @@ fun OnlineShopScreen(
             })
     }
 
+}
+
+@Composable
+fun DeleteDialog(
+    onDeleteClick: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(onDismissRequest = onDismiss, title = {
+        Text(
+            text = "Delete", fontWeight = FontWeight.Bold, fontSize = 22.sp
+        )
+    }, text = {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "Are you sure for delete Product ?? "
+            )
+        }
+    }, confirmButton = {
+        Button(
+            onClick = onDeleteClick,
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color.Red
+            ),
+            modifier = Modifier
+                .clip(CircleShape)
+        ) {
+            Text(
+                text = "Delete",
+                color = Color.White,
+                fontSize = 22.sp
+            )
+        }
+    }, dismissButton = {
+        TextButton(onClick = onDismiss) {
+            Text("Cancel")
+        }
+    })
+}
+
+@Composable
+fun EditProductDialog(
+    product: ProductOnline,
+    isLoading: Boolean = false,
+    onDismiss: () -> Unit,
+    onSaveClick: (ProductOnline) -> Unit
+) {
+    var name by remember { mutableStateOf(product.name ?: "") }
+    var description by remember { mutableStateOf(product.description ?: "") }
+    var price by remember { mutableStateOf(product.price?.toString() ?: "") }
+    var stock by remember { mutableStateOf(product.stock?.toString() ?: "") }
+    var isAvailable by remember { mutableStateOf(product.isAvailable ?: true) }
+
+    AlertDialog(
+        onDismissRequest = { if (!isLoading) onDismiss() },
+        title = {
+            Text(
+                text = "Edit Product",
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // نام محصول
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Product Name") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    enabled = !isLoading
+                )
+
+                // توضیحات
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") },
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 3,
+                    enabled = !isLoading
+                )
+
+                // قیمت
+                OutlinedTextField(
+                    value = price,
+                    onValueChange = { newValue ->
+                        // فقط عدد و نقطه قبول کن
+                        if (newValue.isEmpty() || newValue.matches(Regex("^\\d*\\.?\\d*$"))) {
+                            price = newValue
+                        }
+                    },
+                    label = { Text("Price") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    enabled = !isLoading,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                )
+
+                // موجودی
+                OutlinedTextField(
+                    value = stock,
+                    onValueChange = { newValue ->
+                        // فقط عدد صحیح قبول کن
+                        if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
+                            stock = newValue
+                        }
+                    },
+                    label = { Text("Stock") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    enabled = !isLoading,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+
+                // وضعیت موجود بودن
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Available",
+                        fontSize = 16.sp,
+                        color = Color.Black
+                    )
+                    Switch(
+                        checked = isAvailable,
+                        onCheckedChange = { isAvailable = it },
+                        enabled = !isLoading
+                    )
+                }
+
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .size(24.dp)
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    val updatedProduct = product.copy(
+                        name = name.ifBlank { product.name },
+                        description = description.ifBlank { null },
+                        price = price.toDoubleOrNull() ?: product.price,
+                        stock = stock.toIntOrNull() ?: product.stock,
+                        isAvailable = isAvailable
+                    )
+                    onSaveClick(updatedProduct)
+                },
+                enabled = !isLoading && name.isNotBlank()
+            ) {
+                Text("Save")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss,
+                enabled = !isLoading
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
 }
 
 @Composable

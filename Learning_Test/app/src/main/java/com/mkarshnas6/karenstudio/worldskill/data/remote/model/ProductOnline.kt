@@ -11,6 +11,6 @@ data class ProductOnline(
     val stock: Int,
     val sku: String? = null,
     @SerializedName("is_available") val isAvailable: Boolean,
-    val category_id: Int,
+    @SerializedName("category_id")val categoryId: Int,
     @SerializedName("created_at") val createDate: String,
 )
