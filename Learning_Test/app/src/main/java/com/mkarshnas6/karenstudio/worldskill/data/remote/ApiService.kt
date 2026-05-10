@@ -27,8 +27,13 @@ interface ApiService {
     suspend fun loginUser(
         @Field("username") username: String,
         @Field("password") password: String,
-        @Field("grant_typ") grantType: String = "password"
+        @Field("grant_type") grantType: String = "password"
     ): Response<TokenResponse>
+
+    @GET("/users/me")
+    suspend fun getUserInfo(
+        @Header("Authorization") token : String
+    ): Response<RegisterUserResponse>
 
     @GET("/products")
     suspend fun getAllProducts(): Response<List<ProductOnline>>

@@ -14,6 +14,10 @@ sealed class Screen(val route: String) {
 
     object ShopScreen : Screen("ShopScreen")
 
-    object OnlineShopScreen: Screen("OnlineShopScreen")
+    object OnlineShopScreen : Screen("OnlineShopScreen")
+
+    object ChatScreenWS : Screen("ChatScreenWS/{userId}") {
+        fun createRoute(userId: String): String = "ChatScreenWS/$userId"
+    }
 
 }

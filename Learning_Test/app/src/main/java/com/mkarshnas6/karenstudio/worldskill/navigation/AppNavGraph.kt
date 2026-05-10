@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.mkarshnas6.karenstudio.worldskill.ui.chat.ChatScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.encryption.EncryptionScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.fileProvider.FileProviderSimpleScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dataNav.DataNavScreen
@@ -77,6 +78,18 @@ fun AppNavGraph(
                 navController = navController,
                 context = context
             )
+        }
+
+        composable(
+            route = Screen.ChatScreenWS.route,
+            arguments = listOf(
+                navArgument("userId") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            ChatScreen(userId)
         }
 
     }

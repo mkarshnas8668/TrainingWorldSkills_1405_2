@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -58,7 +59,9 @@ import com.google.gson.Gson
 import com.mkarshnas6.karenstudio.worldskill.data.remote.RetrofitClient
 import com.mkarshnas6.karenstudio.worldskill.data.remote.model.ProductOnline
 import com.mkarshnas6.karenstudio.worldskill.data.remote.model.RegisterUserRequest
+import com.mkarshnas6.karenstudio.worldskill.data.remote.model.RegisterUserResponse
 import com.mkarshnas6.karenstudio.worldskill.data.remote.model.UpdateProductRequest
+import com.mkarshnas6.karenstudio.worldskill.navigation.Screen
 import com.mkarshnas6.karenstudio.worldskill.utils.AppConstant
 import com.mkarshnas6.karenstudio.worldskill.utils.DataStoreManager
 import kotlinx.coroutines.Dispatchers
@@ -96,14 +99,14 @@ fun OnlineShopScreen(
     val savedToken =
         dataStore.readStringFlow(AppConstant.DataStore.TOKEN, "").collectAsState(initial = "")
 
-    var savedInfoUser by remember { mutableStateOf<RegisterUserRequest?>(null) }
+    var savedInfoUser by remember { mutableStateOf<RegisterUserResponse?>(null) }
 
     fun updateInfoUser() {
         scope.launch {
             try {
                 val jsonString = dataStore.readString(AppConstant.DataStore.USER_REGISTER, "")
                 val user = if (jsonString.isNotEmpty()) {
-                    Gson().fromJson(jsonString, RegisterUserRequest::class.java)
+                    Gson().fromJson(jsonString, RegisterUserResponse::class.java)
                 } else {
                     null
                 }
@@ -154,13 +157,27 @@ fun OnlineShopScreen(
                     val token = response.body()?.accessToken
                     if (!token.isNullOrBlank()) {
                         dataStore.saveString(AppConstant.DataStore.TOKEN, token)
-                        dataStore.saveString(
-                            AppConstant.DataStore.USER_REGISTER,
-                            Gson().toJson(user)
-                        )
-                        updateInfoUser()
-                        Toast.makeText(context, "Login Success! Token: $token", Toast.LENGTH_SHORT)
-                            .show()
+
+                        val userInfoResponse = RetrofitClient.apiService.getUserInfo("Bearer $token")
+                        if (userInfoResponse.isSuccessful) {
+                            val userInfo = userInfoResponse.body()
+                            if (userInfo != null) {
+                                dataStore.saveString(
+                                    AppConstant.DataStore.USER_REGISTER,
+                                    Gson().toJson(userInfo)
+                                )
+                                updateInfoUser()
+                                Toast.makeText(
+                                    context,
+                                    "Login Success! Token: $token",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
+                        } else {
+                            Toast.makeText(context, "Error in get User Info !", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     } else {
                         Toast.makeText(context, "Token is Empty !!", Toast.LENGTH_SHORT).show()
                     }
@@ -184,11 +201,14 @@ fun OnlineShopScreen(
                 Log.d("REGISTER", "Sending: ${Gson().toJson(user)}")
                 val response = RetrofitClient.apiService.registerUser(user)
                 if (response.isSuccessful) {
+                    val userResponse = response.body()
+                    if (userResponse != null) {
                     dataStore.saveString(
                         AppConstant.DataStore.USER_REGISTER,
-                        Gson().toJson(user)
+                        Gson().toJson(userResponse)
                     )
-                    loginUser(user)
+                        loginUser(user)
+                    }
                     updateInfoUser()
                     Toast.makeText(context, "Register is success !!", Toast.LENGTH_SHORT).show()
                     showDialogRegister = false
@@ -211,7 +231,8 @@ fun OnlineShopScreen(
     fun deleteProduct(productId: Int) {
         scope.launch {
             try {
-                val response = RetrofitClient.apiService.deleteProduct(productId,"Bearer ${savedToken.value}")
+                val response =
+                    RetrofitClient.apiService.deleteProduct(productId, "Bearer ${savedToken.value}")
                 if (response.isSuccessful) {
                     products = products.filter { it.id != productId }
                     Toast.makeText(
@@ -232,7 +253,6 @@ fun OnlineShopScreen(
     fun updateProduct(updatedProduct: ProductOnline) {
         scope.launch {
             try {
-                // 👈 اینجا تبدیل کن
                 val request = UpdateProductRequest(
                     name = updatedProduct.name,
                     description = updatedProduct.description,
@@ -379,25 +399,43 @@ fun OnlineShopScreen(
 
                             savedInfoUser != null -> {
                                 savedInfoUser?.let { user ->
-                                    Column {
-                                        Text(
-                                            text = user.full_name ?: user.username,
-                                            color = Color.Black,
-                                            fontSize = 16.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                        Text(
-                                            text = "Logout",
-                                            color = Color.Red,
-                                            fontSize = 14.sp,
-                                            modifier = Modifier.clickable {
-                                                scope.launch {
-                                                    dataStore.removeByKey(AppConstant.DataStore.TOKEN)
-                                                    dataStore.removeByKey(AppConstant.DataStore.USER_REGISTER)
-                                                    savedInfoUser = null
+                                    Row {
+                                        Icon(
+                                            imageVector = Icons.Default.MailOutline,
+                                            contentDescription = null,
+                                            tint = Color.Black,
+                                            modifier = Modifier
+                                                .size(80.dp)
+                                                .clip(CircleShape)
+                                                .padding(10.dp)
+                                                .clickable {
+                                                    navController.navigate(
+                                                        Screen.ChatScreenWS.createRoute(
+                                                            user.id
+                                                        )
+                                                    )
                                                 }
-                                            }
                                         )
+                                        Column {
+                                            Text(
+                                                text = user.full_name ?: user.username,
+                                                color = Color.Black,
+                                                fontSize = 16.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                            Text(
+                                                text = "Logout",
+                                                color = Color.Red,
+                                                fontSize = 14.sp,
+                                                modifier = Modifier.clickable {
+                                                    scope.launch {
+                                                        dataStore.removeByKey(AppConstant.DataStore.TOKEN)
+                                                        dataStore.removeByKey(AppConstant.DataStore.USER_REGISTER)
+                                                        savedInfoUser = null
+                                                    }
+                                                }
+                                            )
+                                        }
                                     }
                                 }
                             }
