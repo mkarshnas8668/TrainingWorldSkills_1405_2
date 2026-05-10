@@ -13,6 +13,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.fileProvider.FileProviderSimpleS
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dataNav.DataNavScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.onlineShop.OnlineShopScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.sensor.SensorScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.shop.ShopScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sse.SSEScreen
 import com.mkarshnas6.karenstudio.worldskill.utils.SharedPrefsManager
@@ -95,6 +96,13 @@ fun AppNavGraph(
 
         composable(Screen.SSEScreen.route) {
             SSEScreen()
+        }
+
+        composable(Screen.SensorScreen.route) {
+            SensorScreen(
+                navController = navController,
+                context = context
+            )
         }
 
     }

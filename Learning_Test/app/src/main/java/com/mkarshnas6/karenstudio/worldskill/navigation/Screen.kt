@@ -22,4 +22,6 @@ sealed class Screen(val route: String) {
 
     object SSEScreen : Screen("SSEScreen")
 
+    object SensorScreen: Screen("SensorScreen")
+
 }

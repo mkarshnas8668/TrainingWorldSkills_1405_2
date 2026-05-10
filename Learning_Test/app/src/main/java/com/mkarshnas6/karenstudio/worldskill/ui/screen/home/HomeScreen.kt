@@ -109,6 +109,12 @@ fun HomeScreen(
             Text("SSE Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.SensorScreen.route) }
+        ) {
+            Text("Sensor Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {
