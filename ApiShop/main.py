@@ -1,20 +1,23 @@
 # main.py
-from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, status
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, status, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.responses import StreamingResponse
 from sqlalchemy import create_engine, Column, Integer, String, Float, Text, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, Session, relationship
 from sqlalchemy.sql import func
 from jose import JWTError, jwt
 from pydantic import BaseModel
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import List, Optional, Dict, Set
 import os
 import uuid
 import shutil
 import hashlib
 import secrets
 from enum import Enum
+import asyncio
+import json
 
 # ============= تنظیمات اولیه =============
 DATABASE_URL = "sqlite:///./shop.db"
@@ -31,16 +34,14 @@ engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# ============= توابع هش کردن پسورد (بدون نیاز به bcrypt) =============
+# ============= توابع هش کردن پسورد =============
 def hash_password(password: str) -> str:
-    """هش کردن پسورد با SHA256 و salt"""
     salt = secrets.token_hex(16)
     salted_password = password + salt
     hashed = hashlib.sha256(salted_password.encode()).hexdigest()
     return f"{salt}${hashed}"
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """بررسی صحت پسورد"""
     try:
         salt, stored_hash = hashed_password.split('$')
         salted_password = plain_password + salt
@@ -56,6 +57,13 @@ def create_access_token(data: dict):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+def decode_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload.get("sub")
+    except:
+        return None
 
 # ============= مدل‌های دیتابیس =============
 class UserRole(str, Enum):
@@ -396,26 +404,102 @@ def get_current_admin(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Not enough permissions")
     return current_user
 
+# ============= WebSocket Connection Manager =============
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, WebSocket] = {}
+        self.online_users: Set[str] = set()
+    
+    async def connect(self, websocket: WebSocket, client_id: str):
+        await websocket.accept()
+        self.active_connections[client_id] = websocket
+        self.online_users.add(client_id)
+        await self.broadcast_online_users()
+        
+        if client_id != "admin":
+            await self.notify_admin({
+                "type": "user_online",
+                "user_id": client_id,
+                "message": f"کاربر {client_id} آنلاین شد"
+            })
+    
+    async def disconnect(self, client_id: str):
+        if client_id in self.active_connections:
+            del self.active_connections[client_id]
+            self.online_users.discard(client_id)
+            await self.broadcast_online_users()
+            
+            if client_id != "admin":
+                await self.notify_admin({
+                    "type": "user_offline",
+                    "user_id": client_id,
+                    "message": f"کاربر {client_id} آفلاین شد"
+                })
+    
+    async def send_personal_message(self, message: dict, client_id: str):
+        if client_id in self.active_connections:
+            try:
+                await self.active_connections[client_id].send_json(message)
+            except:
+                await self.disconnect(client_id)
+    
+    async def broadcast_to_users(self, message: dict):
+        for client_id, connection in self.active_connections.items():
+            if client_id != "admin":
+                try:
+                    await connection.send_json(message)
+                except:
+                    pass
+    
+    async def notify_admin(self, message: dict):
+        if "admin" in self.active_connections:
+            try:
+                await self.active_connections["admin"].send_json(message)
+            except:
+                pass
+    
+    async def broadcast_online_users(self):
+        users = [uid for uid in self.online_users if uid != "admin"]
+        for client_id in self.active_connections:
+            try:
+                await self.active_connections[client_id].send_json({
+                    "type": "online_users",
+                    "users": users,
+                    "count": len(users)
+                })
+            except:
+                pass
+    
+    async def send_chat_message(self, sender_id: str, receiver_id: str, message: str):
+        chat_message = {
+            "type": "chat_message",
+            "sender_id": sender_id,
+            "message": message,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        await self.send_personal_message(chat_message, receiver_id)
+        await self.send_personal_message({**chat_message, "status": "sent"}, sender_id)
+
+manager = ConnectionManager()
+
+# ============= SSE (Server-Sent Events) =============
+sse_clients: Dict[str, asyncio.Queue] = {}
+
 # ============= FastAPI App =============
 app = FastAPI(title="Shop API", version="1.0.0")
-
-# Mount static files
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # ============= سیستم احراز هویت =============
 @app.post("/register", response_model=UserResponse, tags=["Authentication"])
 def register(user: UserCreate, db: Session = Depends(get_db)):
-    # بررسی تکراری بودن نام کاربری
     db_user = db.query(User).filter(User.username == user.username).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")
     
-    # بررسی تکراری بودن ایمیل
     db_email = db.query(User).filter(User.email == user.email).first()
     if db_email:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    # ساخت کاربر جدید
     hashed_password = hash_password(user.password)
     db_user = User(
         username=user.username,
@@ -430,7 +514,6 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     
-    # ساخت سبد خرید برای کاربر
     cart = Cart(user_id=db_user.id)
     db.add(cart)
     db.commit()
@@ -808,6 +891,173 @@ def list_reviews(product_id: int, db: Session = Depends(get_db)):
     reviews = db.query(Review).filter(Review.product_id == product_id).all()
     return reviews
 
+# ============= WebSocket Endpoints =============
+@app.websocket("/ws/{client_type}/{client_id}")
+async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: str):
+    client_identifier = f"{client_type}_{client_id}"
+    
+    try:
+        await manager.connect(websocket, client_identifier)
+        
+        await manager.send_personal_message({
+            "type": "welcome",
+            "message": f"خوش آمدید {client_identifier}!",
+            "online_users": [uid for uid in manager.online_users if uid != "admin"]
+        }, client_identifier)
+        
+        while True:
+            data = await websocket.receive_json()
+            message_type = data.get("type")
+            
+            if message_type == "chat":
+                receiver = data.get("receiver_id", "admin")
+                message = data.get("message", "")
+                
+                await manager.send_chat_message(
+                    sender_id=client_identifier,
+                    receiver_id=receiver,
+                    message=message
+                )
+                
+            elif message_type == "typing":
+                await manager.send_personal_message({
+                    "type": "typing",
+                    "user_id": client_identifier,
+                    "is_typing": data.get("is_typing", True)
+                }, data.get("receiver_id", "admin"))
+                
+            elif message_type == "get_online_users":
+                await manager.send_personal_message({
+                    "type": "online_users",
+                    "users": [uid for uid in manager.online_users if uid != "admin"]
+                }, client_identifier)
+    
+    except WebSocketDisconnect:
+        await manager.disconnect(client_identifier)
+        print(f"❌ {client_identifier} قطع شد")
+    
+    except Exception as e:
+        print(f"❌ خطا: {e}")
+        await manager.disconnect(client_identifier)
+
+@app.get("/ws/online-users", tags=["WebSocket"])
+async def get_online_users():
+    users = [uid for uid in manager.online_users if uid != "admin"]
+    return {"online_users": users, "count": len(users)}
+
+@app.post("/ws/broadcast", tags=["WebSocket"])
+async def broadcast_message(message: str, current_user: User = Depends(get_current_admin)):
+    await manager.broadcast_to_users({
+        "type": "broadcast",
+        "message": message,
+        "from": "admin",
+        "timestamp": datetime.now().isoformat()
+    })
+    return {"message": "پیام با موفقیت ارسال شد"}
+
+# ============= SSE (Server-Sent Events) Endpoints =============
+@app.get("/sse/subscribe/{client_id}")
+async def sse_subscribe(client_id: str, token: str = None):
+    """
+    SSE endpoint - کلاینت وصل میشه و منتظر پیام می‌مونه
+    
+    آدرس: GET /sse/subscribe/user_7?token=xxx
+    
+    فرمت پیام:
+    data: {"type": "notification", "message": "سلام", "title": "پیام جدید"}\n\n
+    """
+    
+    # ساخت صف برای این کلاینت
+    queue = asyncio.Queue()
+    sse_clients[client_id] = queue
+    
+    print(f"🔵 SSE client connected: {client_id}")
+    
+    async def event_generator():
+        try:
+            # اول یه پیام خوش‌آمد بفرست
+            yield f"data: {json.dumps({'type': 'connected', 'message': 'متصل شدید!'})}\n\n"
+            
+            while True:
+                # منتظر پیام بمون
+                message = await queue.get()
+                yield f"data: {json.dumps(message)}\n\n"
+                
+        except asyncio.CancelledError:
+            pass
+        finally:
+            # پاکسازی
+            if client_id in sse_clients:
+                del sse_clients[client_id]
+            print(f"🔴 SSE client disconnected: {client_id}")
+    
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"
+        }
+    )
+
+@app.post("/sse/send/{client_id}")
+async def sse_send_notification(
+    client_id: str,
+    title: str = "اعلان جدید",
+    message: str = "پیام جدید دارید!",
+    current_user: User = Depends(get_current_admin)
+):
+    """
+    ارسال نوتیفیکیشن به یه کاربر خاص
+    
+    POST /sse/send/user_7?title=سلام&message=پیام جدید داری
+    """
+    if client_id in sse_clients:
+        notification = {
+            "type": "notification",
+            "title": title,
+            "message": message,
+            "timestamp": datetime.now().isoformat()
+        }
+        await sse_clients[client_id].put(notification)
+        return {"status": "sent", "client": client_id}
+    else:
+        return {"status": "offline", "client": client_id}
+
+@app.post("/sse/broadcast")
+async def sse_broadcast(
+    title: str = "اعلان همگانی",
+    message: str = "سلام به همه!",
+    current_user: User = Depends(get_current_admin)
+):
+    """
+    ارسال نوتیفیکیشن به همه کاربران
+    
+    POST /sse/broadcast?title=تخفیف&message=همه محصولات ۵۰٪ تخفیف
+    """
+    count = 0
+    for client_id, queue in sse_clients.items():
+        if client_id != "admin":
+            notification = {
+                "type": "notification",
+                "title": title,
+                "message": message,
+                "timestamp": datetime.now().isoformat()
+            }
+            await queue.put(notification)
+            count += 1
+    
+    return {"status": "broadcasted", "count": count}
+
+@app.get("/sse/online-clients")
+async def get_sse_clients():
+    """دریافت لیست کلاینت‌های متصل به SSE"""
+    return {
+        "clients": list(sse_clients.keys()),
+        "count": len(sse_clients)
+    }
+
 @app.get("/", tags=["Root"])
 def root():
     return {
@@ -816,20 +1066,46 @@ def root():
         "redoc": "/redoc"
     }
 
+# Mount static files (باید آخر کار باشه)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+def create_admin():
+    db = SessionLocal()
+    admin = db.query(User).filter(User.username == "admin").first()
+    if not admin:
+        admin = User(
+            username="admin",
+            email="admin@gmail.com",
+            hashed_password=hash_password("admin123"),
+            full_name="Administrator",
+            phone="0911111111",
+            address="Tehran",
+            role=UserRole.ADMIN.value
+        )
+        db.add(admin)
+        db.commit()
+        db.refresh(admin)
+        print("✅ ادمین پیش‌فرض ساخته شد!")
+        print("   Username: admin")
+        print("   Password: admin123")
+    else:
+        print("✅ ادمین از قبل وجود دارد")
+    db.close()
+
 # ============= اجرای برنامه =============
 if __name__ == "__main__":
     import uvicorn
-    
-    # پاک کردن دیتابیس قبلی
+
     if os.path.exists("shop.db"):
         os.remove("shop.db")
         print("✅ دیتابیس قبلی پاک شد")
     
-    # ساخت جداول دیتابیس
     Base.metadata.create_all(bind=engine)
     print("✅ جداول دیتابیس ساخته شدند")
-    
-    # اجرای سرور
+
+    create_admin()
+
     print("🚀 سرور در حال اجرا روی http://127.0.0.1:8000")
     print("📖 مستندات: http://127.0.0.1:8000/docs")
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    print("📡 SSE: http://127.0.0.1:8000/sse/subscribe/{client_id}")
+    uvicorn.run(app, host="0.0.0.0", port=8000)

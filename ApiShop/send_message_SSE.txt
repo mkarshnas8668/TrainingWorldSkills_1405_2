@@ -1,0 +1,2 @@
+get Token : curl -X POST http://127.0.0.1:8000/token -d "username=admin&password=admin123"
+user to send message : curl -X POST "http://127.0.0.1:8000/sse/send/user_7?title=test&message=hello" -H "Authorization: Bearer Use_Token"

@@ -103,6 +103,12 @@ fun HomeScreen(
             Text("OnlineShop")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.SSEScreen.route) }
+        ) {
+            Text("SSE Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

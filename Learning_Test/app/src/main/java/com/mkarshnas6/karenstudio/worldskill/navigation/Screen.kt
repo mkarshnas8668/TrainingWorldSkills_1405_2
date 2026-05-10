@@ -20,4 +20,6 @@ sealed class Screen(val route: String) {
         fun createRoute(userId: String): String = "ChatScreenWS/$userId"
     }
 
+    object SSEScreen : Screen("SSEScreen")
+
 }
