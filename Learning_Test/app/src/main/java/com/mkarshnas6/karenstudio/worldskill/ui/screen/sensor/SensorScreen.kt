@@ -36,6 +36,12 @@ fun SensorScreen(
 
     var accelerometerData by remember { mutableStateOf("شتاب سنج : \nX: 0.00\nY: 0.00\nZ: 0.00") }
     var gyroscopeData by remember { mutableStateOf("\n\nژیروسکوپ : \nX: 0.00\nY: 0.00\nZ: 0.00") }
+    var magnetometerData by remember { mutableStateOf("") }
+    var lightData by remember { mutableStateOf("") }
+    var proximityData by remember { mutableStateOf("") }
+    var pressureData by remember { mutableStateOf("") }
+    var gravityData by remember { mutableStateOf("") }
+    var stepCounterData by remember { mutableStateOf("") }
 
     val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
@@ -65,6 +71,63 @@ fun SensorScreen(
                             x, y, z
                         )
                     }
+
+                    Sensor.TYPE_MAGNETIC_FIELD -> {
+                        val x = event.values[0]
+                        val y = event.values[1]
+                        val z = event.values[2]
+                        magnetometerData = String.format(
+                            Locale.US,
+                            "\n\nMagentic :\nX: %.2f\nY: %.2f\nZ: %.2f",
+                            x, y, z
+                        )
+                    }
+
+                    Sensor.TYPE_LIGHT -> {
+                        val lux = event.values[0]
+                        lightData = String.format(
+                            Locale.US,
+                            "\n\nLight :\n%.2f",
+                            lux
+                        )
+                    }
+
+                    Sensor.TYPE_PROXIMITY -> {
+                        val proximity_cm = event.values[0]
+                        proximityData = String.format(
+                            Locale.US,
+                            "\n\nProximity :\n%.2f cm",
+                            proximity_cm
+                        )
+                    }
+
+                    Sensor.TYPE_STEP_COUNTER -> {
+                        val counter = event.values[0]
+                        stepCounterData = String.format(
+                            Locale.US,
+                            "\n\nstep counter: %.2f",
+                            counter
+                        )
+                    }
+
+                    Sensor.TYPE_PRESSURE -> {
+                        val pressure = event.values[0]
+                        pressureData = String.format(
+                            Locale.US,
+                            "\n\nPressure : %.2f",
+                            pressure
+                        )
+                    }
+
+                    Sensor.TYPE_GRAVITY -> {
+                        val gravity = event.values[0]
+                        gravityData = String.format(
+                            Locale.US,
+                            "\n\nGravity : %.2f",
+                            gravity
+                        )
+                    }
+
                 }
             }
 
@@ -73,11 +136,35 @@ fun SensorScreen(
 
         val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         val gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+        val magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+        val light = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+        val proximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
+        val pressure = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
+        val gravity = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+        val stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         accelerometer?.let {
             sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
         }
         gyroscope?.let {
+            sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+        magnetometer?.let {
+            sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+        light?.let {
+            sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+        proximity?.let {
+            sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+        pressure?.let {
+            sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+        gravity?.let {
+            sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+        stepCounter?.let {
             sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
         }
 
@@ -99,7 +186,7 @@ fun SensorScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "$accelerometerData$gyroscopeData",
+                text = "$accelerometerData$gyroscopeData$magnetometerData$lightData$proximityData$stepCounterData$gravityData$pressureData",
                 color = Color.Green,
                 fontSize = 22.sp,
                 fontFamily = FontFamily.Monospace
