@@ -26,6 +26,8 @@ sealed class Screen(val route: String) {
 
     object CameraScreen : Screen("CameraScreen")
 
-    object Biometric : Screen("BiometricScreen")
+    object BiometricScreen : Screen("BiometricScreen")
+
+    object ClipboardScreen:Screen("ClipboardScreen")
 
 }

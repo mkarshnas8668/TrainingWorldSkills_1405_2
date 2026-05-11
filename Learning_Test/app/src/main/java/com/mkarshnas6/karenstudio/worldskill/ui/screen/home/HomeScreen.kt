@@ -122,9 +122,15 @@ fun HomeScreen(
         }
 
         Button(
-            onClick = { navController.navigate(Screen.Biometric.route) }
+            onClick = { navController.navigate(Screen.BiometricScreen.route) }
         ) {
             Text("Biometric Screen")
+        }
+
+        Button(
+            onClick = { navController.navigate(Screen.ClipboardScreen.route) }
+        ) {
+            Text("Clipboard Screen")
         }
 
     }
