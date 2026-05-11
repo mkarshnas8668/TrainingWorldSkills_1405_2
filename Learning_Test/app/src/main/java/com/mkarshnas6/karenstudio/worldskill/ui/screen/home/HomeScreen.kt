@@ -121,6 +121,12 @@ fun HomeScreen(
             Text("Camera Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.Biometric.route) }
+        ) {
+            Text("Biometric Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

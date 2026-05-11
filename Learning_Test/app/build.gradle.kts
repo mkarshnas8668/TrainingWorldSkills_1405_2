@@ -84,4 +84,7 @@ dependencies {
 //    Gson
     implementation(libs.gson)
 
+//    Biometric
+    implementation(libs.biometric)
+
 }

@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.mkarshnas6.karenstudio.worldskill.ui.chat.ChatScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.encryption.EncryptionScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.fileProvider.FileProviderSimpleScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.biometric.BiometricScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.camera.CameraScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dataNav.DataNavScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
@@ -108,6 +109,13 @@ fun AppNavGraph(
 
         composable(Screen.CameraScreen.route) {
             CameraScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.Biometric.route) {
+            BiometricScreen(
                 navController = navController,
                 context = context
             )

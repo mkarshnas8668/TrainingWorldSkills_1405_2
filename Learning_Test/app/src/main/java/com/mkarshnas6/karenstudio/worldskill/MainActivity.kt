@@ -4,12 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.fragment.app.FragmentActivity
 import com.mkarshnas6.karenstudio.worldskill.data.remote.RetrofitClient
 import com.mkarshnas6.karenstudio.worldskill.navigation.AppNavGraph
 import com.mkarshnas6.karenstudio.worldskill.ui.theme.WorldSkillTheme
 import com.mkarshnas6.karenstudio.worldskill.utils.SharedPrefsManager
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     private lateinit var prefsManager: SharedPrefsManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
