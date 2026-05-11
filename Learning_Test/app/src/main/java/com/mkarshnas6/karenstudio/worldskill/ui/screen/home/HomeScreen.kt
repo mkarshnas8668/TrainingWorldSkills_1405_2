@@ -115,6 +115,12 @@ fun HomeScreen(
             Text("Sensor Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.CameraScreen.route) }
+        ) {
+            Text("Camera Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {
