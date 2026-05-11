@@ -133,6 +133,12 @@ fun HomeScreen(
             Text("Clipboard Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.DragDropScreen.route) }
+        ) {
+            Text("Drag Drop Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

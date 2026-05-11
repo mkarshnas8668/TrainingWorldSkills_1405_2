@@ -14,6 +14,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.biometric.BiometricScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.camera.CameraScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.clipboard.ClipboardScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dataNav.DataNavScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.dragDrop.DragDropScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.onlineShop.OnlineShopScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sensor.SensorScreen
@@ -124,6 +125,13 @@ fun AppNavGraph(
 
         composable(Screen.ClipboardScreen.route) {
             ClipboardScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.DragDropScreen.route) {
+            DragDropScreen(
                 navController = navController,
                 context = context
             )

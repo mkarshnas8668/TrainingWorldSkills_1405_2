@@ -30,4 +30,6 @@ sealed class Screen(val route: String) {
 
     object ClipboardScreen:Screen("ClipboardScreen")
 
+    object DragDropScreen: Screen("DragDropScreen")
+
 }
