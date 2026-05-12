@@ -1,4 +1,4 @@
-package com.mkarshnas6.karenstudio.worldskill.ui.encryption
+package com.mkarshnas6.karenstudio.worldskill.ui.screen.encryption
 
 import android.content.Context
 import android.content.Intent

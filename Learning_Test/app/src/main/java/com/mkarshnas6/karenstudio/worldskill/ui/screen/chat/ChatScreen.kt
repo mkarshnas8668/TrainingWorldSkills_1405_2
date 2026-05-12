@@ -1,4 +1,4 @@
-package com.mkarshnas6.karenstudio.worldskill.ui.chat
+package com.mkarshnas6.karenstudio.worldskill.ui.screen.chat
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

@@ -7,15 +7,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.mkarshnas6.karenstudio.worldskill.ui.chat.ChatScreen
-import com.mkarshnas6.karenstudio.worldskill.ui.encryption.EncryptionScreen
-import com.mkarshnas6.karenstudio.worldskill.ui.fileProvider.FileProviderSimpleScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.biometric.BiometricScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.camera.CameraScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.chat.ChatScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.clipboard.ClipboardScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dataNav.DataNavScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dragDrop.DragDropScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.encryption.EncryptionScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.fileProvider.FileProviderSimpleScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.foregroundService.ForegroundServiceScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.location.LocationScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.onlineShop.OnlineShopScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sensor.SensorScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.shop.ShopScreen
@@ -132,6 +134,20 @@ fun AppNavGraph(
 
         composable(Screen.DragDropScreen.route) {
             DragDropScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.ForegroundServiceScreen.route) {
+            ForegroundServiceScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.LocationScreen.route) {
+            LocationScreen(
                 navController = navController,
                 context = context
             )

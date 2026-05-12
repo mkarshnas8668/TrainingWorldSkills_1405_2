@@ -1,4 +1,4 @@
-package com.mkarshnas6.karenstudio.worldskill.ui.fileProvider
+package com.mkarshnas6.karenstudio.worldskill.ui.screen.fileProvider
 
 import android.content.Context
 import android.content.Intent

@@ -139,6 +139,18 @@ fun HomeScreen(
             Text("Drag Drop Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.ForegroundServiceScreen.route) }
+        ) {
+            Text("Foreground Service Screen")
+        }
+
+        Button(
+            onClick = { navController.navigate(Screen.LocationScreen.route) }
+        ) {
+            Text("Location Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

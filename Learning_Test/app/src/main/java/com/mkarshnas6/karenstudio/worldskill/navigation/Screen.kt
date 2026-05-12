@@ -32,4 +32,8 @@ sealed class Screen(val route: String) {
 
     object DragDropScreen: Screen("DragDropScreen")
 
+    object ForegroundServiceScreen : Screen("ForegroundServiceScreen")
+
+    object LocationScreen : Screen("LocationScreen")
+
 }
