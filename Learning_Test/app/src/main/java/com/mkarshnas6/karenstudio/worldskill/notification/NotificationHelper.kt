@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.mkarshnas6.karenstudio.worldskill.MainActivity
 import com.mkarshnas6.karenstudio.worldskill.R
@@ -19,19 +18,17 @@ class NotificationHelper(private val context: Context) {
 
     // start one time : create the chnnel
     fun createChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                description = "this description show to setting"
-                enableVibration(true) // have vibrate : لرزش داشتن
-                setShowBadge(true) // packaged many message
-            }
-            val manager = context.getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "this description show in settings"
+            setShowBadge(true)
+            enableVibration(true)
         }
+        val manager = context.getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(channel)
     }
 
     fun showSimpleNotification(title: String, message: String, icon: Int) {
@@ -39,17 +36,16 @@ class NotificationHelper(private val context: Context) {
             .setContentTitle(title)
             .setContentText(message)
             .setSmallIcon(icon)
-            .setOngoing(false)
-            .setPriority(NotificationCompat.PRIORITY_HIGH) // اولویت
-            .setAutoCancel(true) // close with click
+            .setOngoing(true)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+//            .setAutoCancel(true)
             .build()
         val manager = context.getSystemService(NotificationManager::class.java)
-        manager.notify(1, notification)// id : for notification
+        manager.notify(11, notification)
     }
 
     // click on notif and open app
     fun showNotificationWithClick(title: String, message: String, icon: Int) {
-        // when use click on notification open app
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context, 0, intent,
@@ -60,12 +56,12 @@ class NotificationHelper(private val context: Context) {
             .setContentText(message)
             .setSmallIcon(icon)
             .setOngoing(false)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
             .build()
         val manager = context.getSystemService(NotificationManager::class.java)
-        manager.notify(2, notification)
+        manager.notify(29, notification)
     }
 
     // click on buttons notif
@@ -79,8 +75,8 @@ class NotificationHelper(private val context: Context) {
         // button stop
         val actionIntent = Intent(context, NotificationActionReceiver::class.java)
         actionIntent.putExtra("action", "stop")
-        val actionPendingIntent = PendingIntent.getBroadcast(
-            context, 1, actionIntent,
+        val actionPendingIntent = PendingIntent.getActivity(
+            context, 0, actionIntent,
             PendingIntent.FLAG_IMMUTABLE
         )
 

@@ -175,6 +175,12 @@ fun HomeScreen(
             Text("Notification Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.MusicPlayerScreen.route) }
+        ) {
+            Text("Music Player Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {
