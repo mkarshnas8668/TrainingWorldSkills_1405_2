@@ -151,6 +151,18 @@ fun HomeScreen(
             Text("Location Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.GeofenceScreen.route) }
+        ) {
+            Text("Geofence Screen")
+        }
+
+        Button(
+            onClick = { navController.navigate(Screen.DynamicBroadcast.route) }
+        ) {
+            Text("Dynamic Broadcast Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

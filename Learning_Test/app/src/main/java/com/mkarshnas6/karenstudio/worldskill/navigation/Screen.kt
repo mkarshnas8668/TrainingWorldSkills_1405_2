@@ -28,12 +28,16 @@ sealed class Screen(val route: String) {
 
     object BiometricScreen : Screen("BiometricScreen")
 
-    object ClipboardScreen:Screen("ClipboardScreen")
+    object ClipboardScreen : Screen("ClipboardScreen")
 
-    object DragDropScreen: Screen("DragDropScreen")
+    object DragDropScreen : Screen("DragDropScreen")
 
     object ForegroundServiceScreen : Screen("ForegroundServiceScreen")
 
     object LocationScreen : Screen("LocationScreen")
+
+    object GeofenceScreen : Screen("GeofenceScreen")
+
+    object DynamicBroadcast : Screen("DynamicBroadcast")
 
 }

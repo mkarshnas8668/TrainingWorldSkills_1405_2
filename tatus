@@ -1,0 +1,143 @@
+[33mcommit c8c1fe9823627b12c83919c3b053cafa138ebe13[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Tue May 12 22:02:31 2026 +0330
+
+    added Location screen || foreground service wrong
+
+[33mcommit d23dd47b0c4c61699785a16fe405cdafc24a79e8[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Mon May 11 20:11:13 2026 +0330
+
+    added list draggable items
+
+[33mcommit 36c20a2dd2fc849866f10c992a3e801308da9fa4[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Mon May 11 18:49:14 2026 +0330
+
+    added drog and drop just text
+
+[33mcommit db7f3ec4034bdc5c868e9f4b010cad6b510bb7c1[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Mon May 11 12:43:26 2026 +0330
+
+    added Clipboard
+
+[33mcommit dbd8354a95d1b29499f6898d416189c829fb5eba[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Mon May 11 11:28:05 2026 +0330
+
+    added Biometric Screen || added biometric to librarys || change MainActvity of ComponentActivity to FragmentActivity
+
+[33mcommit d44d8d1a145d1b281def29f13e45a960b1cc5475[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Mon May 11 08:21:01 2026 +0330
+
+    added check permission || get permission || camera API -> AndroidView : TextureView
+
+[33mcommit 137702cfe991b62c6f2cafe62e7ef91bd2759f23[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Sun May 10 22:07:46 2026 +0330
+
+    added all sencore
+
+[33mcommit bc53c2e8f0ebde9c9419c6e8f2aa0c3a2616f615[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Sun May 10 20:52:51 2026 +0330
+
+    added work with sensor (acilometer && gyroscope
+
+[33mcommit bafb10184cc31e878a8d9ab67c2a505c2f615196[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Sun May 10 16:50:22 2026 +0330
+
+    eddit file text for using SSE
+
+[33mcommit 90effe70f3d6bf7f086586439f36ea323d9e2b94[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Sun May 10 16:49:08 2026 +0330
+
+    add SSE || SSE Manager || SEE Screen || file text for how to use SSE
+
+[33mcommit 95410d17aeea4686cef4d3bf577a9040a89da18e[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Sun May 10 10:33:42 2026 +0330
+
+    added web sockt
+
+[33mcommit 6ef88b4767d09924e05cef52f6bf24e3ffeb6894[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Sat May 9 20:46:06 2026 +0330
+
+    added update and delete and send token to header
+
+[33mcommit 434f378767a59bbd70b1e5e372a67f15f762b614[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Sat May 9 18:57:58 2026 +0330
+
+    added api serviec || api backend || OkHttp || cache data
+
+[33mcommit 200f700dabaf3f25cb60157198613ed36dc80c39[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Sat May 9 05:56:31 2026 +0330
+
+    added reader json from raw with bufferedReader
+
+[33mcommit 9c5a126c4c6412ccd3d6d0e0e926290aa66302ba[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Fri May 8 19:48:16 2026 +0330
+
+    added Migration to DB : for add Column
+
+[33mcommit d64cbc3a1d4881cd211ce1c7827d0ce24ab37c17[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Fri May 8 19:31:08 2026 +0330
+
+    added type converter || paging with limit & offset
+
+[33mcommit f4217e276f3a8f6d2c26d26d63c4c711d0955785[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Fri May 8 15:16:44 2026 +0330
+
+    added DB without relation & converter
+
+[33mcommit efea63d87fc1894e931c5daf6b81046bbaea4984[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Thu May 7 23:12:20 2026 +0330
+
+    start Project BodyFit || create navigation base || added librarys
+
+[33mcommit bae4640d08ee787c6e7bfa8464b622b0590ccd38[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Thu May 7 22:52:37 2026 +0330
+
+    edit ui cryption
+
+[33mcommit 79e48e10179a4fb716ef6284966284ac04fc6f5e[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Thu May 7 22:44:04 2026 +0330
+
+    create encryption screen || key manager || crypto manager
+
+[33mcommit 6edbdfaa774c510b4d6b7c1827ebb579a02c454b[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Thu May 7 18:18:38 2026 +0330
+
+    create file provider screen || for sahring content to another apps
+
+[33mcommit 8ee875d52419c52b0602b145e6cb5f2433c5a58f[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Thu May 7 13:15:38 2026 +0330
+
+    added Scoped Storage Manager
+
+[33mcommit 58291a54fa8449384431868ed612df8d96c16405[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Thu May 7 10:07:19 2026 +0330
+
+    added External Storage Manager
+
+[33mcommit 00370bcb7752f141cb7c75fbde10edd27f7d6aac[m
+Author: Mohammad karshnas <mkarshnas6@gmail.com>
+Date:   Thu May 7 07:48:42 2026 +0330
+
+    data store || share pref || internal && internal cache

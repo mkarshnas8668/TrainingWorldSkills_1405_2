@@ -13,9 +13,11 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.chat.ChatScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.clipboard.ClipboardScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dataNav.DataNavScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dragDrop.DragDropScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.dynamicBroadcast.DynamicBroadcastScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.encryption.EncryptionScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.fileProvider.FileProviderSimpleScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.foregroundService.ForegroundServiceScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.geofence.GeofenceScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.location.LocationScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.onlineShop.OnlineShopScreen
@@ -26,7 +28,11 @@ import com.mkarshnas6.karenstudio.worldskill.utils.SharedPrefsManager
 
 @Composable
 fun AppNavGraph(
-    prefsManager: SharedPrefsManager
+    prefsManager: SharedPrefsManager,
+    onRegister: () -> Unit,
+    onUnregister: () -> Unit,
+    batteryStatus: String = "---",
+    networkStatus: String = "---"
 ) {
     val navController = rememberNavController()
     val context = LocalContext.current
@@ -150,6 +156,24 @@ fun AppNavGraph(
             LocationScreen(
                 navController = navController,
                 context = context
+            )
+        }
+
+        composable(Screen.GeofenceScreen.route) {
+            GeofenceScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.DynamicBroadcast.route) {
+            DynamicBroadcastScreen(
+                onRegister = onRegister,
+                onUnregister = onUnregister,
+                navController = navController,
+                context = context,
+                batteryStatus = batteryStatus,
+                networkStatus = networkStatus
             )
         }
 

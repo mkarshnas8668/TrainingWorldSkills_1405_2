@@ -21,22 +21,28 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"
         tools:ignore="ForegroundServicesPolicy" />
 
-<!--    ................ Location ........................... -->
+    <!--    ................ Location ........................... -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
+    <uses-permission
+        android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
         tools:ignore="BackgroundLocationPolicy" />
 
 
-<!--    this is for work better in background service-->
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <!--    this is for work better in background service-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
+    <!--    use this for static broadcast receiver-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -77,8 +83,21 @@
         <service
             android:name=".service.LocationForegroundService"
             android:enabled="true"
-            android:foregroundServiceType="dataSync"
-            android:exported="false"/>
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <!--        use static broadcast receiver-->
+        <!--        this just for boot receiver-->
+        <receiver
+            android:name=".receiver.StaticBootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <!--            ^^ for system  ^^-->
+            <intent-filter>
+                <!--                listen to boot system -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
