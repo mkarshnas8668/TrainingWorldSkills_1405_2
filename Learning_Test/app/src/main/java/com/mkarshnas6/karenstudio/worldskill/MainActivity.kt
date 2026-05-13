@@ -89,7 +89,7 @@ class MainActivity : FragmentActivity() {
             addAction(Intent.ACTION_SCREEN_OFF)
             addAction(Intent.ACTION_SCREEN_ON)
         }
-        registerReceiver(systemReceiver, filter)
+        registerReceiver(systemReceiver , filter)
         Log.d(TAG, "✅ Receiver ثبت شد")
     }
 

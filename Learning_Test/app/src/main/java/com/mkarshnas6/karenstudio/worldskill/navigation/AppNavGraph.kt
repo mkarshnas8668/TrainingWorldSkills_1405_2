@@ -20,6 +20,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.foregroundService.Foregro
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.geofence.GeofenceScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.location.LocationScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.notification.NotificationScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.onlineShop.OnlineShopScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sensor.SensorScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.shop.ShopScreen
@@ -174,6 +175,13 @@ fun AppNavGraph(
                 context = context,
                 batteryStatus = batteryStatus,
                 networkStatus = networkStatus
+            )
+        }
+
+        composable(Screen.NotificationScreen.route) {
+            NotificationScreen(
+                navController = navController,
+                context = context
             )
         }
 

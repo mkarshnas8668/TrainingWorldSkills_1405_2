@@ -43,7 +43,7 @@ fun SensorScreen(
     var gravityData by remember { mutableStateOf("") }
     var stepCounterData by remember { mutableStateOf("") }
 
-    val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    val sensorManager = context.getSystemService(SensorManager::class.java)
 
     LifecycleResumeEffect(Unit) {
         val sensorListener = object : SensorEventListener {

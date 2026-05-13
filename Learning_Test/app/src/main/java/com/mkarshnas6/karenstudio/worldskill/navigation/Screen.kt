@@ -40,4 +40,6 @@ sealed class Screen(val route: String) {
 
     object DynamicBroadcast : Screen("DynamicBroadcast")
 
+    object NotificationScreen:Screen("NotificationScreen")
+
 }
