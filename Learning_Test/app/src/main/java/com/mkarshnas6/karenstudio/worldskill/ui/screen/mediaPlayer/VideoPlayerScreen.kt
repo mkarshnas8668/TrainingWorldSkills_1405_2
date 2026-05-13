@@ -81,7 +81,7 @@ fun VideoPlayerScreen(
             AndroidView(
                 factory = { ctx ->
                     VideoView(ctx).apply {
-                        setVideoURI(Uri.parse("android.resource://${ctx.packageName}/${R.raw.type_of_worker_visa}"))
+                        setVideoURI(Uri.parse("android.resource://${ctx.packageName}/${R.raw.gol_ronaldo}"))
                         // when ready video
                         setOnPreparedListener { mp ->
                             mp.isLooping = false
