@@ -181,6 +181,12 @@ fun HomeScreen(
             Text("Music Player Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.VideoPlayerScreen.route) }
+        ) {
+            Text("Video Player Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {
