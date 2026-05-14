@@ -217,6 +217,13 @@ fun HomeScreen(
             Text("Bluetooth Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.CanvasScreen.route) }
+        ) {
+            Text("Canvas Screen")
+        }
+
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

@@ -56,4 +56,6 @@ sealed class Screen(val route: String) {
 
     object BluetoothScreen : Screen("BluetoothScreen")
 
+    object CanvasScreen : Screen("CanvasScreen")
+
 }

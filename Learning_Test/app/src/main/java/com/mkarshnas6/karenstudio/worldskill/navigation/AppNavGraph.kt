@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.biometric.BiometricScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.camera.CameraScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.canvas.CanvasScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.chat.ChatScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.clipboard.ClipboardScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.contentProvider.ContactScreen
@@ -47,7 +48,7 @@ fun AppNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.HomeScreen.route
+        startDestination = Screen.CanvasScreen.route
     ) {
 
         composable(route = Screen.HomeScreen.route) {
@@ -236,6 +237,13 @@ fun AppNavGraph(
 
         composable(Screen.BluetoothScreen.route) {
             BluetoothScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.CanvasScreen.route){
+            CanvasScreen(
                 navController = navController,
                 context = context
             )
