@@ -205,6 +205,12 @@ fun HomeScreen(
             Text("Telephony Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.MediaStoreScreen.route) }
+        ) {
+            Text("MediaStore Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

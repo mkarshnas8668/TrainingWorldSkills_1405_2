@@ -23,6 +23,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.location.LocationScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.mediaPlayer.MusicPlayerScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.mediaPlayer.VideoPlayerScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.mediaStore.MediaStoreScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.notification.NotificationScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.onlineShop.OnlineShopScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.screenRecroder.ScreenRecorderScreen
@@ -220,6 +221,13 @@ fun AppNavGraph(
 
         composable(Screen.TelephonyScreen.route) {
             TelephonyScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.MediaStoreScreen.route) {
+            MediaStoreScreen(
                 navController = navController,
                 context = context
             )
