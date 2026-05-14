@@ -11,6 +11,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.biometric.BiometricScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.camera.CameraScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.chat.ChatScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.clipboard.ClipboardScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.contentProvider.ContactScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dataNav.DataNavScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dragDrop.DragDropScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.dynamicBroadcast.DynamicBroadcastScreen
@@ -28,6 +29,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.screenRecroder.ScreenReco
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sensor.SensorScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.shop.ShopScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sse.SSEScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.telephony.TelephonyScreen
 import com.mkarshnas6.karenstudio.worldskill.utils.SharedPrefsManager
 
 @Composable
@@ -195,19 +197,34 @@ fun AppNavGraph(
             )
         }
 
-        composable(Screen.VideoPlayerScreen.route){
+        composable(Screen.VideoPlayerScreen.route) {
             VideoPlayerScreen(
                 navController = navController,
                 context = context
             )
         }
 
-            composable(Screen.ScreenRecorderScreen.route){
-                ScreenRecorderScreen(
-                    navController = navController,
-                    context = context
-                )
+        composable(Screen.ScreenRecorderScreen.route) {
+            ScreenRecorderScreen(
+                navController = navController,
+                context = context
+            )
         }
+
+        composable(Screen.ContactScreen.route) {
+            ContactScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.TelephonyScreen.route) {
+            TelephonyScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
     }
 
 }

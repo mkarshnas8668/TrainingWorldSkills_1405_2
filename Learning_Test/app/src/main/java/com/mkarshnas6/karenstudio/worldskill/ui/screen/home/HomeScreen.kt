@@ -193,6 +193,18 @@ fun HomeScreen(
             Text("Screen Recorder Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.ContactScreen.route) }
+        ) {
+            Text("Contact Screen")
+        }
+
+        Button(
+            onClick = { navController.navigate(Screen.TelephonyScreen.route) }
+        ) {
+            Text("Telephony Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

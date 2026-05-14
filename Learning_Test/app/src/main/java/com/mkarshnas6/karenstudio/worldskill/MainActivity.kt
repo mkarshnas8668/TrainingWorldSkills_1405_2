@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -89,7 +90,7 @@ class MainActivity : FragmentActivity() {
             addAction(Intent.ACTION_SCREEN_OFF)
             addAction(Intent.ACTION_SCREEN_ON)
         }
-        registerReceiver(systemReceiver , filter)
+        registerReceiver(systemReceiver, filter)
         Log.d(TAG, "✅ Receiver ثبت شد")
     }
 
@@ -124,6 +125,7 @@ class MainActivity : FragmentActivity() {
                 )
             }
         }
+
     }
 
     private fun createNotificationChannel() {
