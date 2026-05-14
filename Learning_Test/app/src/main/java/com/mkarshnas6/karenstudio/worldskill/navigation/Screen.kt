@@ -54,5 +54,6 @@ sealed class Screen(val route: String) {
 
     object MediaStoreScreen : Screen("MediaStoreScreen")
 
+    object BluetoothScreen : Screen("BluetoothScreen")
 
 }

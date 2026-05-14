@@ -1,5 +1,6 @@
 package com.mkarshnas6.karenstudio.worldskill.navigation
 
+import BluetoothScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
@@ -228,6 +229,13 @@ fun AppNavGraph(
 
         composable(Screen.MediaStoreScreen.route) {
             MediaStoreScreen(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.BluetoothScreen.route) {
+            BluetoothScreen(
                 navController = navController,
                 context = context
             )

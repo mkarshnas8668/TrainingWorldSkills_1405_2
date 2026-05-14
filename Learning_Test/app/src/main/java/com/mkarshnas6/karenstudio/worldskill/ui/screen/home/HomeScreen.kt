@@ -211,6 +211,12 @@ fun HomeScreen(
             Text("MediaStore Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.BluetoothScreen.route) }
+        ) {
+            Text("Bluetooth Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {
