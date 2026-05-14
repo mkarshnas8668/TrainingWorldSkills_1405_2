@@ -44,6 +44,7 @@ sealed class Screen(val route: String) {
 
     object MusicPlayerScreen : Screen("MusicPlayerScreen")
     object VideoPlayerScreen : Screen("VideoPlayerScreen")
+    object ScreenRecorderScreen : Screen("ScreenRecorderScreen")
 
 
 }

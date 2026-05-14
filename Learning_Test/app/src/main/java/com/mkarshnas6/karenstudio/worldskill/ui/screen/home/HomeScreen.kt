@@ -187,6 +187,12 @@ fun HomeScreen(
             Text("Video Player Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.ScreenRecorderScreen.route) }
+        ) {
+            Text("Screen Recorder Screen")
+        }
+
     }
 
 //    Box(modifier = Modifier.fillMaxSize()) {

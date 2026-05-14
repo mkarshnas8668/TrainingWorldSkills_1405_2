@@ -24,6 +24,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.mediaPlayer.MusicPlayerSc
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.mediaPlayer.VideoPlayerScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.notification.NotificationScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.onlineShop.OnlineShopScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.screenRecroder.ScreenRecorderScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sensor.SensorScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.shop.ShopScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sse.SSEScreen
@@ -201,6 +202,12 @@ fun AppNavGraph(
             )
         }
 
+            composable(Screen.ScreenRecorderScreen.route){
+                ScreenRecorderScreen(
+                    navController = navController,
+                    context = context
+                )
+        }
     }
 
 }
