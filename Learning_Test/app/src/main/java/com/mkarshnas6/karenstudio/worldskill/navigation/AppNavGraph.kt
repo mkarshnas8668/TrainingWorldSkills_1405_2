@@ -38,7 +38,7 @@ fun AppNavGraph(
     onRegister: () -> Unit,
     onUnregister: () -> Unit,
     batteryStatus: String = "---",
-    networkStatus: String = "---"
+    networkStatus: String = "---",
 ) {
     val navController = rememberNavController()
     val context = LocalContext.current
