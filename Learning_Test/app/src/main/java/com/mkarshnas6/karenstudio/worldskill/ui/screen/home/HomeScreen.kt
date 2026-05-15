@@ -223,6 +223,18 @@ fun HomeScreen(
             Text("Canvas Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.GameLoopScreen.route) }
+        ) {
+            Text("GameLoop Screen")
+        }
+
+        Button(
+            onClick = { navController.navigate(Screen.AnimationScreen.route) }
+        ) {
+            Text("Animation Screen")
+        }
+
 
     }
 

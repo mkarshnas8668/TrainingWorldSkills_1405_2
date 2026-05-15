@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.animation.AnimationScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.biometric.BiometricScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.camera.CameraScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.canvas.CanvasScreen
@@ -20,6 +21,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.dynamicBroadcast.DynamicB
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.encryption.EncryptionScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.fileProvider.FileProviderSimpleScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.foregroundService.ForegroundServiceScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.gameLoop.GameLoop
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.geofence.GeofenceScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.home.HomeScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.location.LocationScreen
@@ -48,7 +50,7 @@ fun AppNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.CanvasScreen.route
+        startDestination = Screen.HomeScreen.route
     ) {
 
         composable(route = Screen.HomeScreen.route) {
@@ -242,10 +244,24 @@ fun AppNavGraph(
             )
         }
 
-        composable(Screen.CanvasScreen.route){
+        composable(Screen.CanvasScreen.route) {
             CanvasScreen(
                 navController = navController,
                 context = context
+            )
+        }
+
+        composable(Screen.GameLoopScreen.route) {
+            GameLoop(
+                navController = navController,
+                context = context
+            )
+        }
+
+        composable(Screen.AnimationScreen.route) {
+            AnimationScreen(
+                navController,
+                context
             )
         }
 
