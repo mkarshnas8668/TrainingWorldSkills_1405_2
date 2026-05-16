@@ -37,7 +37,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <!--    ................ Location ........................... -->
-<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission
         android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
@@ -120,6 +120,18 @@
         <receiver
             android:name=".notification.NotificationActionReceiver"
             android:exported="false" />
+
+        <!--        receiver for App widget-->
+        <receiver
+            android:name=".widget.SimpleAppWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/simple_widget_info" />
+        </receiver>
 
     </application>
 

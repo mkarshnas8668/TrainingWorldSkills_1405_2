@@ -12,6 +12,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.animation.AnimationScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.biometric.BiometricScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.camera.CameraScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.canvas.CanvasScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.chart.ChartScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.chat.ChatScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.clipboard.ClipboardScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.contentProvider.ContactScreen
@@ -262,6 +263,13 @@ fun AppNavGraph(
             AnimationScreen(
                 navController,
                 context
+            )
+        }
+
+        composable(Screen.ChartScreen.route) {
+            ChartScreen(
+                navController = navController,
+                context = context
             )
         }
 

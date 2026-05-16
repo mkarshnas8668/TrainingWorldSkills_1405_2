@@ -235,6 +235,12 @@ fun HomeScreen(
             Text("Animation Screen")
         }
 
+        Button(
+            onClick = { navController.navigate(Screen.ChartScreen.route) }
+        ) {
+            Text("Chart Screen")
+        }
+
 
     }
 

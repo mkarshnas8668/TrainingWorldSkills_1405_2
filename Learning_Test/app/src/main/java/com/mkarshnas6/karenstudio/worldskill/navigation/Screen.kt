@@ -60,6 +60,8 @@ sealed class Screen(val route: String) {
 
     object GameLoopScreen : Screen("GameLoopScreen")
 
-    object AnimationScreen: Screen("AnimationScreen")
+    object AnimationScreen : Screen("AnimationScreen")
+
+    object ChartScreen : Screen("ChartScreen")
 
 }
