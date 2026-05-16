@@ -12,6 +12,25 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val name = "Mohammad"
+        val family = "Karshnas"
+        assertEquals("Mohammad Karshnas", "$name $family")
     }
+
+    @Test
+    fun checkZoogAndFard() {
+        val listNums = mapOf(
+            233 to "fard",
+            2323543 to "fard",
+            1 to "fard",
+            2 to "zoog",
+            23 to "fard",
+            1119 to "fard",
+            4848 to "zoog"
+        )
+        for ((num,expected) in listNums) {
+            assertEquals(expected, UtilsTest.testShowZoogAndFard(num))
+        }
+    }
+
 }

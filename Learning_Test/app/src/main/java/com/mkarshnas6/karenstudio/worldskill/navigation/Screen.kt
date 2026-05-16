@@ -64,4 +64,6 @@ sealed class Screen(val route: String) {
 
     object ChartScreen : Screen("ChartScreen")
 
+    object TestUiScreen : Screen("TestUIScreen")
+
 }

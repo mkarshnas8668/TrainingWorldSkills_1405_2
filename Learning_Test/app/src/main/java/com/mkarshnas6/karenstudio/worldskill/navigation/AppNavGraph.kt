@@ -36,6 +36,7 @@ import com.mkarshnas6.karenstudio.worldskill.ui.screen.sensor.SensorScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.shop.ShopScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.sse.SSEScreen
 import com.mkarshnas6.karenstudio.worldskill.ui.screen.telephony.TelephonyScreen
+import com.mkarshnas6.karenstudio.worldskill.ui.screen.testUI.TestUiScreen
 import com.mkarshnas6.karenstudio.worldskill.utils.SharedPrefsManager
 
 @Composable
@@ -271,6 +272,10 @@ fun AppNavGraph(
                 navController = navController,
                 context = context
             )
+        }
+
+        composable(Screen.TestUiScreen.route) {
+            TestUiScreen()
         }
 
     }

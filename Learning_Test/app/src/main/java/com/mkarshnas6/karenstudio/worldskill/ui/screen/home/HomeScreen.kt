@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -53,7 +54,8 @@ fun HomeScreen(
         modifier = Modifier
             .padding(bottom = 20.dp)
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .testTag("MainColumnHomeScreen"),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -75,12 +77,14 @@ fun HomeScreen(
 
         TextField(
             value = nameTextField,
-            onValueChange = { nameTextField = it }
+            onValueChange = { nameTextField = it },
+            modifier = Modifier.testTag("TextFieldSaveDataStore")
         )
         Spacer(modifier = Modifier.height(10.dp))
         Spacer(modifier = Modifier.height(10.dp))
         Button(
-            onClick = { viewModel.saveName(nameTextField);viewModel.saveNotif(notifChecked) }
+            onClick = { viewModel.saveName(nameTextField);viewModel.saveNotif(notifChecked) },
+            modifier = Modifier.testTag("ButtonSaveDataStore")
         ) {
             Text("Save")
         }
@@ -239,6 +243,13 @@ fun HomeScreen(
             onClick = { navController.navigate(Screen.ChartScreen.route) }
         ) {
             Text("Chart Screen")
+        }
+
+        Button(
+            onClick = { navController.navigate(Screen.TestUiScreen.route) },
+            modifier = Modifier.testTag("btn_TestUiScreen")
+        ) {
+            Text("Test Ui Screen")
         }
 
 
