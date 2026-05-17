@@ -28,11 +28,9 @@ class InternalStorageManager(private val context: Context) {
                 BufferedWriter(FileWriter(file)).use() { writer ->
                     writer.write(content)
                 }
-
 //                file.bufferedWriter().use { writer ->
 //                    writer.write(content)
 //                }
-
                 true
             } catch (e: IOException) {
                 e.printStackTrace()

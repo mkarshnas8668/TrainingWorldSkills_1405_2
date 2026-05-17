@@ -7,7 +7,6 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 
 class KeyManager {
-
     private val keyStore: KeyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
 
     fun getOrCreateKey(alias: String): SecretKey {
@@ -42,6 +41,4 @@ class KeyManager {
         } catch (e: Exception) {
             false
         }
-    }
-
-}
+    } }

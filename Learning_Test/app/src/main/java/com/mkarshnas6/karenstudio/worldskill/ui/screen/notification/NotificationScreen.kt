@@ -31,6 +31,7 @@ fun NotificationScreen(
 ) {
     val helper = remember { NotificationHelper(context) }
 
+    // check permission notification : set post notification in manifest
     if (ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.POST_NOTIFICATIONS

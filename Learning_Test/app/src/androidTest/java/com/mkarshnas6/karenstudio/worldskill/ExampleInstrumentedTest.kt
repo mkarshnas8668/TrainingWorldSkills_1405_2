@@ -156,7 +156,7 @@ class ExampleInstrumentedTest {
             .performClick()
 
         composeTestMainActivity.waitForIdle()
-        
+
 
     }
 

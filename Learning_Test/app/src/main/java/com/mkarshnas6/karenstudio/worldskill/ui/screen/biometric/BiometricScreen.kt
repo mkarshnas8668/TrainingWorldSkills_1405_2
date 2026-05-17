@@ -41,7 +41,6 @@ fun BiometricScreen(
     navController: NavController,
     context: Context
 ) {
-
     // variable status
     var isAuthenticated by remember { mutableStateOf(false) }
     var statusText by remember { mutableStateOf("is Lock !!") }

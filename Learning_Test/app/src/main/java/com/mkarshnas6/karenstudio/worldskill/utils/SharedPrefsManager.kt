@@ -5,15 +5,12 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 
 class SharedPrefsManager(context: Context) {
-
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences("DataWorldSkill", Context.MODE_PRIVATE)
-
     // save
     fun saveString(key: String, value: String) {
         sharedPref.edit { putString(key, value) }
     }
-
     fun saveInt(key: String, value: Int) {
         sharedPref.edit { putInt(key, value) }
     }
@@ -30,13 +27,10 @@ class SharedPrefsManager(context: Context) {
     fun getInt(key: String, defaultValue: Int = 0): Int {
         return sharedPref.getInt(key, defaultValue)
     }
-
     fun getBoolean(key: String, defaultValue: Boolean = false): Boolean {
         return sharedPref.getBoolean(key, defaultValue)
     }
-
     // remove
-
     fun removeByKey(key: String) {
         sharedPref.edit { remove(key) }
     }

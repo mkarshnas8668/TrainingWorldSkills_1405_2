@@ -47,6 +47,4 @@ interface ProductDao {
         minPrice: Double,
         maxPrice: Double
     ): Flow<List<ProductEntity>>
-
-
 }

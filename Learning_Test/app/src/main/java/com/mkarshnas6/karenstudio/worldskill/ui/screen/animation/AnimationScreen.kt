@@ -72,7 +72,7 @@ fun AnimationScreen(
 
     val rotation = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
-
+    /// animation Fan
     LaunchedEffect(fanSpeed) {
         scope.launch {
             while (true) {
@@ -293,7 +293,6 @@ fun AnimationScreen(
                         .graphicsLayer {
                             rotationY = animationRotationY
                         }
-
                 )
             }
         }

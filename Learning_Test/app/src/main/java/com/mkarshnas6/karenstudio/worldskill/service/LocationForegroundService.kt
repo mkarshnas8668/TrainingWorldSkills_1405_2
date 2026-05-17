@@ -47,5 +47,4 @@ class LocationForegroundService : Service() {
             .setOngoing(true) // user don't can close
             .build()
     }
-
 }

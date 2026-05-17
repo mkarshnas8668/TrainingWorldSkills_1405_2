@@ -39,25 +39,21 @@ class MainActivity : FragmentActivity() {
     private val systemReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
-
                 // 🔋 باتری کم (فقط گوشی واقعی)
                 Intent.ACTION_BATTERY_LOW -> {
                     Log.d(TAG, "🔋 باتری کم شد!")
                     batteryStatus = "🔋 باتری کم شد!"
                 }
-
                 // 🔌 شارژر وصل (فقط گوشی واقعی)
                 Intent.ACTION_POWER_CONNECTED -> {
                     Log.d(TAG, "🔌 شارژر وصل شد!")
                     batteryStatus = "🔌 شارژر وصل شد!"
                 }
-
                 // 🔌 شارژر قطع (فقط گوشی واقعی)
                 Intent.ACTION_POWER_DISCONNECTED -> {
                     Log.d(TAG, "🔌 شارژر قطع شد!")
                     batteryStatus = "🔌 شارژر قطع شد!"
                 }
-
                 // ✈️ حالت هواپیما (قابل تست با Emulator!)
                 Intent.ACTION_AIRPLANE_MODE_CHANGED -> {
                     val isAirplaneMode = intent.getBooleanExtra("state", false)
@@ -65,13 +61,11 @@ class MainActivity : FragmentActivity() {
                     networkStatus = if (isAirplaneMode) "✈️ حالت هواپیما روشن"
                     else "✈️ حالت هواپیما خاموش"
                 }
-
                 // 📱 خاموش/روشن شدن صفحه (با Emulator قابل تست!)
                 Intent.ACTION_SCREEN_OFF -> {
                     Log.d(TAG, "📱 صفحه خاموش شد")
                     batteryStatus = "📱 صفحه خاموش شد"
                 }
-
                 Intent.ACTION_SCREEN_ON -> {
                     Log.d(TAG, "📱 صفحه روشن شد")
                     batteryStatus = "📱 صفحه روشن شد"

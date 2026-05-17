@@ -27,16 +27,13 @@ fun CanvasScreen(
     navController: NavController,
     context: Context
 ) {
-
     // draw image
     val imageBitmap = ImageBitmap.imageResource(R.drawable.img_sniper)
-
     // this : mean type of DrawScope
     Canvas(
         modifier = Modifier
             .fillMaxSize()
     ) {
-
 
         // gradient just for circle
         val circleCenter = Offset(500f, 1000f)

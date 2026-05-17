@@ -167,7 +167,6 @@ fun SensorScreen(
         stepCounter?.let {
             sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL)
         }
-
         onPauseOrDispose { sensorManager.unregisterListener(sensorListener) }
     }
 

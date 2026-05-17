@@ -104,7 +104,6 @@ class NotificationHelper(private val context: Context) {
 
     fun showGroupNotifications() {
         val manager = context.getSystemService(NotificationManager::class.java)
-
         // summery of group in start of all them
         val summeryNotification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle("3 new messages")

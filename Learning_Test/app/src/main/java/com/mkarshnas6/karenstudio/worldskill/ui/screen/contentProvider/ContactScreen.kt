@@ -26,7 +26,6 @@ fun ContactScreen(
     navController: NavController,
     context: Context
 ) {
-
     var contacts by remember { mutableStateOf(listOf<Pair<String, String>>()) }
 
     val activity = context as ComponentActivity

@@ -7,7 +7,6 @@ import android.widget.RemoteViews
 import com.mkarshnas6.karenstudio.worldskill.R
 
 class SimpleAppWidget : AppWidgetProvider() {
-
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -18,7 +17,6 @@ class SimpleAppWidget : AppWidgetProvider() {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
-
     companion object {
         fun updateAppWidget(
             context: Context,

@@ -10,7 +10,6 @@ import java.io.FileReader
 import java.io.IOException
 
 class ExternalStorageManager(private val context: Context) {
-
     private val externalFilesDir: File? // maybe user cut off SD Card
         get() = context.getExternalFilesDir(null)
 

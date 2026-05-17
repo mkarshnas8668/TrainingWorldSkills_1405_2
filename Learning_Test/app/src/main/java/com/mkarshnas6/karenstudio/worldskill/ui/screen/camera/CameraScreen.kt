@@ -52,7 +52,6 @@ fun CameraScreen(
     navController: NavController,
     context: Context
 ) {
-
     var camera by remember { mutableStateOf<Camera?>(null) }
     var isCameraReady by remember { mutableStateOf(false) }
     var hasCameraPermission by remember { mutableStateOf(false) }

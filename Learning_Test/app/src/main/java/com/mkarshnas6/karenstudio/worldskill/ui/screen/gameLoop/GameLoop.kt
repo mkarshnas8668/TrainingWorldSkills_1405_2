@@ -39,7 +39,6 @@ fun GameLoop(
     navController: NavController,
     context: Context
 ) {
-
     var widthScreen by remember { mutableStateOf(200) }
 
     Box(
@@ -48,7 +47,6 @@ fun GameLoop(
             .onSizeChanged {
                 widthScreen = it.width
             })
-
     // variables for changing and draw animation
     var ballX by remember { mutableStateOf(100f) }
     var bally by remember { mutableStateOf(100f) }

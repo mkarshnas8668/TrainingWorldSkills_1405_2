@@ -158,7 +158,8 @@ fun OnlineShopScreen(
                     if (!token.isNullOrBlank()) {
                         dataStore.saveString(AppConstant.DataStore.TOKEN, token)
 
-                        val userInfoResponse = RetrofitClient.apiService.getUserInfo("Bearer $token")
+                        val userInfoResponse =
+                            RetrofitClient.apiService.getUserInfo("Bearer $token")
                         if (userInfoResponse.isSuccessful) {
                             val userInfo = userInfoResponse.body()
                             if (userInfo != null) {
@@ -171,8 +172,7 @@ fun OnlineShopScreen(
                                     context,
                                     "Login Success! Token: $token",
                                     Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                ).show()
                             }
                         } else {
                             Toast.makeText(context, "Error in get User Info !", Toast.LENGTH_SHORT)
@@ -203,10 +203,10 @@ fun OnlineShopScreen(
                 if (response.isSuccessful) {
                     val userResponse = response.body()
                     if (userResponse != null) {
-                    dataStore.saveString(
-                        AppConstant.DataStore.USER_REGISTER,
-                        Gson().toJson(userResponse)
-                    )
+                        dataStore.saveString(
+                            AppConstant.DataStore.USER_REGISTER,
+                            Gson().toJson(userResponse)
+                        )
                         loginUser(user)
                     }
                     updateInfoUser()
@@ -256,7 +256,7 @@ fun OnlineShopScreen(
                 val request = UpdateProductRequest(
                     name = updatedProduct.name,
                     description = updatedProduct.description,
-                    price = updatedProduct.price?.toDouble(),
+                    price = updatedProduct.price,
                     discountPrice = updatedProduct.discountPrice,
                     stock = updatedProduct.stock,
                     sku = updatedProduct.sku,
