@@ -18,7 +18,7 @@
       </SelectionState>
       <SelectionState runConfigName="testUiTestScreen()">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-05-17T06:21:19.394987100Z">
+        <DropdownSelection timestamp="2026-05-18T03:00:58.447625400Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Rayana System\.android\avd\Pixel_9_Pro.avd" />

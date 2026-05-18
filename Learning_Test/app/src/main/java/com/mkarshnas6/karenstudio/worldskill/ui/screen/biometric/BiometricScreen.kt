@@ -2,7 +2,6 @@ package com.mkarshnas6.karenstudio.worldskill.ui.screen.biometric
 
 import android.content.Context
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.background
